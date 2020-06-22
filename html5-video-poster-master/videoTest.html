@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8" >
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
+    <meta name="format-detection" content="telephone=no" >
+    <meta name="screen-orientation" content="portrait" >
+    <meta name="x5-orientation" content="portrait" >
+    <meta name="full-screen" content="yes" >
+    <meta name="x5-fullscreen" content="true" >
+    <meta name="browsermode" content="application" >
+    <meta name="x5-page-mode" content="app" >
+    <title>视频video应用</title>
+    <style>
+        .video-con{ width: 300px; height: 150px; position: relative; margin-bottom: 20px;}
+        .video-con .video{ width: 100%; height: 100%;}
+        .video-con .btn{ width: 64px; height: 64px; background: transparent url("play-btn.png") no-repeat;
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); border: none;
+        }
+        .video-con .btn.pause{ background-image: url("pause-btn.png");}
+    </style>
+</head>
+
+<body>
+
+<h1>视频video应用：截取封面图；监听播放状态</h1>
+
+<div class="video-con">
+    <video class="video"  poster="">
+        <source src="1.mp4" >
+    </video>
+    <button type="button" class="btn js-play-btn"></button>
+</div>
+
+<div class="video-con">
+    <video class="video" poster="">
+        <source src="2.mp4" >
+    </video>
+    <button type="button" class="btn js-play-btn"></button>
+</div>
+
+
+<!--html5的video-->
+<script type="text/javascript">
+    // 视频------视频截图 ~~ 视频播放状态 ~~
+    const setMedia = function(video, scale = 0.8) {
+        // 设置poster属性：（非本地视频资源会有跨域截图问题）
+        video.addEventListener('loadeddata', function(e) {
+            // 拿到图片
+            let canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth * scale;
+            canvas.height = video.videoHeight * scale;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            let src = canvas.toDataURL('image/png');
+            // 显示在dom，测试用
+            (function(flag = true) {
+                if (!flag) {return;}
+                let img = document.createElement('img');
+                img.src = src;
+                document.body.appendChild(img);
+            })(0);
+            // 设置属性
+            video.setAttribute('poster', src);
+        });
+// -------------------------------------------------------------------------------------
+        //检测视频播放状态：
+        //播放按钮
+        let playBtn =  video.parentNode.childNodes[2].nextSibling;
+        //设置状态
+        function vidplaySate(e) {
+            if (video.paused) {
+                video.play();
+                playBtn.classList.add('pause');
+            } else {
+                video.pause();
+                playBtn.classList.remove('pause');
+            }
+        }
+        //点击监听
+        video.addEventListener('click', vidplaySate, false);
+        playBtn.addEventListener('click', vidplaySate, false);
+        //结束监听
+        video.addEventListener('ended',function () {
+            playBtn.classList.remove('pause');
+        });
+    };
+    //视频：
+    let videos = document.querySelectorAll('video');
+    videos.forEach((video) => {
+        setMedia(video);
+    });
+
+</script>

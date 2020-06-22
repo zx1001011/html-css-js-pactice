@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>江苏省农业物联网管理平台-热力图</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../css/page_jsmap.css">
+    <script src="../echarts/echarts.js"></script>
+    <script src="../js/js/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+    <div id="nav">
+        <image src="../image/nav/top_comp_left.png"></image>
+        <div>
+            <a href="../../../login.jsp">
+                <h1 id="area"></h1>
+                <h1>Jiangsu Agricultural Internet of things Management Platform</h1>
+            </a>
+        </div>
+        <image src="../image/nav/top_comp_right.png"></image>
+    </div>
+    <div id="nav-content">
+        <div id="nav-info" class="nav-content">
+            <div id="info" class="content">
+                <div>
+                    <div id="toJsmapPage" class="selected">
+                        <a href="page_jsmap.html">
+                            <image src="../image/nav/nav_pic01.png"></image>
+                        </a>
+                    </div>
+                    <div id="toVideoPage" class="notSelected">
+                        <a href="page_video.html?state=1">
+                            <image src="../image/nav/nav_pic01.png"></image>
+                        </a>
+                    </div>
+                    <div id="toDevicePage" class="notSelected">
+                        <a href="page_device.html?state=1">
+                            <image src="../image/nav/nav_pic02.png"></image>
+                        </a>
+                    </div>
+                    <div id="toMapPage" class="notSelected">
+                        <a href="page_map.html?longitude=119.500&latitude=31.700&level=0">
+                            <image src="../image/nav/nav_pic03.png"></image>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="map"></div>
+    </div>
+    <script type="text/javascript">
+        var request = (function () {
+            var t = GetQueryString('name')
+            if (t === null) {
+                t = '江苏省'
+            } else {
+                t = this.decodeURIComponent(t)
+            }
+            console.log(t)
+            return {
+                name: t,
+            };
+        })();
+
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return (r[2]);
+            return null;
+        }
+        document.write('<script src="../js/map/' + request.name + '.js" type="text/javascript"></scr' + 'ipt>');
+    </script>
+    <script>
+        window.getObjectById = function (url, para) {
+            var ob = null;
+            jQuery.ajax({
+                type: 'post',
+                cache: false,
+                async: false,
+                url: url,
+                timeout: 600000, //设置请求超时时间（毫秒）。此设置将覆盖全局设置。
+                dataType: "json", //
+                data: para,
+                success: function (data, textStatus) {
+                    ob = data;
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+
+                }
+            });
+            return ob;
+        };
+        var jsmap = {
+            "desc": null,
+            "detailInfo": [{
+                    "deviceCount": 0,
+                    "cityName": "常州市",
+                    "unitCount": 7
+                },
+                {
+                    "deviceCount": 86,
+                    "cityName": "无锡市",
+                    "unitCount": 9
+                },
+                {
+                    "deviceCount": 0,
+                    "cityName": "镇江市",
+                    "unitCount": 7
+                },
+                {
+                    "deviceCount": 0,
+                    "cityName": "扬州市",
+                    "unitCount": 8
+                },
+                {
+                    "deviceCount": 0,
+                    "cityName": "连云港市",
+                    "unitCount": 7
+                },
+                {
+                    "deviceCount": 62,
+                    "cityName": "南京市",
+                    "unitCount": 31
+                },
+                {
+                    "deviceCount": 0,
+                    "cityName": "宿迁市",
+                    "unitCount": 6
+                },
+                {
+                    "deviceCount": 0,
+                    "cityName": "徐州市",
+                    "unitCount": 11
+                },
+                {
+                    "deviceCount": 0,
+                    "cityName": "淮安市",
+                    "unitCount": 8
+                },
+                {
+                    "deviceCount": 72,
+                    "cityName": "苏州市",
+                    "unitCount": 11
+                },
+                {
+                    "deviceCount": 1,
+                    "cityName": "泰州市",
+                    "unitCount": 8
+                },
+                {
+                    "deviceCount": 27,
+                    "cityName": "南通市",
+                    "unitCount": 13
+                },
+                {
+                    "deviceCount": 0,
+                    "cityName": "盐城市",
+                    "unitCount": 10
+                }
+            ],
+            "code": 0
+        }
+        $(document).ready(function () {
+            var unit = window.getObjectById('../../../../../getplace', {
+                'a': 'a'
+            });
+            var html = unit.place + "农业物联网管理平台";
+            $("#area").append(html);
+            map();
+        })
+
+        function map() {
+            var myChart = echarts.init(document.getElementById('map'));
+            var data = [{
+                    name: '徐州市',
+                    value: 4822023
+                },
+                {
+                    name: '宿迁市',
+                    value: 731449
+                },
+                {
+                    name: '淮安市',
+                    value: 6553255
+                },
+                {
+                    name: '连云港市',
+                    value: 2949131
+                },
+                {
+                    name: '盐城市',
+                    value: 38041430
+                },
+                {
+                    name: '泰州市',
+                    value: 5187582
+                },
+                {
+                    name: '扬州市',
+                    value: 3590347
+                },
+                {
+                    name: '南京市',
+                    value: 917092
+                },
+                {
+                    name: '镇江市',
+                    value: 632323
+                },
+                {
+                    name: '常州市',
+                    value: 19317568
+                },
+                {
+                    name: '无锡市',
+                    value: 9919945
+                },
+                {
+                    name: '苏州市',
+                    value: 1392313
+                },
+                {
+                    name: '南通市',
+                    value: 1595728
+                },
+            ]
+            // 气泡图
+            var geoCoordMap = {
+                '盐城市': [120.13, 33.38],
+                '南京市': [118.78, 32.04],
+                '苏州市': [120.62, 31.32],
+                '镇江市': [119.44, 32.2],
+                '扬州市': [119.42, 32.39],
+                '常州市': [119.95, 31.79],
+                '无锡市': [120.29, 31.59],
+                '徐州市': [117.2, 34.26],
+                '泰州市': [119.9, 32.49],
+                '连云港市': [119.16, 34.59],
+                '宿迁市': [118.3, 33.96],
+                '淮安市': [119.15, 33.5],
+                '南通市': [121.1023, 32.1625]
+            }
+            var convertData = function (data) {
+                var res = [];
+                for (var i = 0; i < data.length; i++) {
+                    var geoCoord = geoCoordMap[data[i].name];
+                    if (geoCoord) {
+                        res.push({
+                            name: data[i].name,
+                            value: geoCoord.concat(data[i].value)
+                        });
+                    }
+                }
+                return res;
+            };
+            var seriesP = [{
+                    name: '数量',
+                    type: 'map',
+                    mapType: 'beijing',
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: true
+                            },
+                            borderWidth: 2, //区域边框宽度 
+                            borderColor: '#00cde2', //区域边框颜色 
+                            areaColor: "#2ab0d6"
+                        },
+                        emphasis: {
+                            label: {
+                                show: true
+                            }
+                        }
+                    },
+                    roam: true,
+                    zoom: 1.0,
+                    data: data
+                }, {
+                    name: '数量',
+                    type: 'scatter',
+                    coordinateSystem: 'geo',
+                    data: convertData(data),
+                    symbolSize: function (val) {
+                        return val[2] / 10;
+                    },
+                    encode: {
+                        value: 2
+                    },
+                    label: {
+                        formatter: '{b}',
+                        position: 'right',
+                        show: false
+                    },
+                    itemStyle: {
+                        color: 'purple'
+                    },
+                    emphasis: {
+                        label: {
+                            show: false
+                        }
+                    },
+                    roam: true,
+                    zoom: 1.0,
+                },
+                {
+                    name: 'Top 5',
+                    type: 'effectScatter',
+                    coordinateSystem: 'geo',
+                    data: convertData(data.sort(function (a, b) {
+                        return b.value - a.value;
+                    }).slice(0, 6)),
+                    symbolSize: function (val) {
+                        return val[2] / 10;
+                    },
+                    encode: {
+                        value: 2
+                    },
+                    showEffectOn: 'render',
+                    rippleEffect: {
+                        brushType: 'stroke'
+                    },
+                    hoverAnimation: true,
+                    label: {
+                        formatter: '{b}',
+                        position: 'right',
+                        show: false
+                    },
+                    itemStyle: {
+                        color: 'purple',
+                        shadowBlur: 10,
+                        shadowColor: '#333'
+                    },
+                    zlevel: 1,
+                    roam: true,
+                    zoom: 1.0,
+                }
+            ]
+            var max = 200
+            // 动态设置气泡大小
+            data.forEach(function (itemOpt) {
+                if (itemOpt.value > max) {
+                    max = itemOpt.value;
+                }
+            });
+            var option = {
+                title: {},
+                tooltip: {
+                    trigger: 'item',
+                },
+                geo: {
+                    show: true,
+                    map: 'beijing',
+                    roam: true,
+                    zoom: 1.0,
+                },
+                // 气泡大小
+                visualMap: [{
+                    show: false,
+                    min: 0,
+                    max: max,
+                    inRange: {
+                        symbolSize: [6, 40]
+                    },
+                    seriesIndex: 2
+                }, {
+                    show: false,
+                    min: 0,
+                    max: max,
+                    inRange: {
+                        symbolSize: [6, 40]
+                    },
+                    seriesIndex: 1
+                }, {
+                    left: 'right',
+                    min: 0,
+                    max: max,
+                    inRange: {
+                        color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090',
+                            '#fdae61', '#f46d43', '#d73027', '#a50026'
+                        ]
+                    },
+                    text: ['High', 'Low'], // 文本，默认为数值文本
+                    calculable: true,
+                    seriesIndex: 0
+                }],
+                series: seriesP
+            };
+            myChart.setOption(option);
+            myChart.on('click', function (param) {
+                if (request.name == '江苏省') {
+                    window.location.href = "page_jsmap.html?name=" + param.name;
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

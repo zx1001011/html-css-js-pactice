@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>li列表测试简单js代码 无需引用插件</title>
+    <!-- 引入jq -->
+    <script type="text/javascript" src="./jquery-3.4.1.min.js"></script>
+</head>
+<style type="text/css">
+    .view{
+        margin: 0px auto;
+    }
+    .ul_div ul{
+        padding: 0px;
+        list-style: none;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        margin: 0px;
+    }
+    /**
+    *循环列表必须大于ul可容纳数量
+    */
+    .ul_div li{
+        height: 40px;
+        line-height: 40px;
+        border-bottom: 1px #666 solid;
+        background-color: #ccc;
+    }
+    /**
+    *该样式必须
+     */
+    .ul_div{
+        width: 300px;
+        height: 200px;
+        overflow: hidden;
+    }
+	#news ul,li {
+		list-style: none;
+	}
+	#news{
+		height: 107px;
+		overflow: hidden;
+	}
+</style>
+<body>
+<div class="view">
+    <div class="ul_div">
+        <ul class="ul">
+            <li>1.li列表测试简单js代码 无需引用插件</li>
+            <li>2.li列表测试简单js代码 无需引用插件</li>
+            <li>3.li列表测试简单js代码 无需引用插件</li>
+            <li>4.li列表测试简单js代码 无需引用插件</li>
+            <li>5.li列表测试简单js代码 无需引用插件</li>
+            <li>6.li列表测试简单js代码 无需引用插件</li>
+        </ul>
+    </div>
+</div>
+<div id="news">
+    <ul>
+        <li><a href="#" title="aaaaaaaaaaaaaaa">aaaaaaaaaaaaaaa</a></li>
+        <li><a href="#" title="bbbbbbbbbbbbbbb">bbbbbbbbbbbbbbb</a></li>
+        <li><a href="#" title="ccccccccccccccc">ccccccccccccccc</a></li>
+        <li><a href="#" title="ddddddddddddddd">ddddddddddddddd</a></li>
+        <li><a href="#" title="eeeeeeeeeeeeeee">eeeeeeeeeeeeeee</a></li>
+        <li><a href="#" title="fffffffffffffff">fffffffffffffff</a></li>
+        <li><a href="#" title="ggggggggggggggg">ggggggggggggggg</a></li>
+    </ul>
+</div>
+<script type="text/javascript">
+    var h_time;
+    var h=0;
+    $(function () {
+        h_time=window.setInterval(h_top,2000);
+		var $this = $("#news");
+		var scrollTimer;
+		$this.hover(function() {
+			clearInterval(scrollTimer);
+		}, function() {
+			scrollTimer = setInterval(function() {
+				scrollNews($this);
+			}, 2000);
+		}).trigger("mouseleave");
+    })
+    function h_top() {
+        var obj=$('.ul');
+        if(h<40){
+            h=h+1;
+            obj.css('top',-h+'px')
+            setTimeout(h_top,30);
+            return false;
+        }else{
+            h=0;
+            var i=$('.ul>li:nth-child(1)');
+            obj.append(i);
+            obj.css('top','0px')
+        }
+    }
+	function scrollNews(obj) {
+        var $self = obj.find("ul");
+        var lineHeight = $self.find("li:first").height(); 
+        $self.animate({
+            "marginTop": -lineHeight + "px"
+        }, 600, function() {
+            $self.css({
+                marginTop: 0
+            }).find("li:first").appendTo($self);
+        })
+    }
+</script>
+</body>
+</html>

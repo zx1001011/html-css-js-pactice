@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ztree</title>
+
+    <script type="text/javascript" src="./jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="./zTree/js/jquery.ztree.core.js"></script>
+    <link rel="stylesheet" href="./zTree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <style>
+    </style>
+</head>
+
+<body>
+    <h1 class="text-center">Hello World</h1>
+    <a href="http://www.baidu.com">百度</a>
+    <input type="text" class="form-control input-sm" id="treeName" onclick="showMenu()">
+    <input type="hidden" name="newsTypeId" id="treeId" />
+    <div id="treeContainer" class="treeContainer">
+        <ul id="treeConfig" class="ztree"></ul>
+    </div>
+</body>
+<script type="text/javascript">
+    var setting = {
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        check: {
+            enable: true,
+            chkStyle: "checkbox",
+        },
+        view: {
+            showLine: true
+        },
+        callback: {
+            onClick: function (event, treeId, treeNode) {
+                console.log('onClick')
+                console.log(treeNode.id + ", " + treeNode.name)
+                localStorage.setItem('ztreeSelectedItem', treeNode.id)
+            },
+            onExpand: function (event, treeId, treeNode) {
+                console.log('onExpand')
+                console.log(treeNode.id + ", " + treeNode.name);
+                var arr = localStorage.getItem('ztreeOpen')
+                console.log(arr)
+                console.log(typeof arr)
+                if (arr === null) {
+                    arr = []
+                    arr.push(treeNode.id)
+                } else {
+                    arr = arr.split(',')
+                    if (arr.indexOf(treeNode.id) === -1) {
+                        arr.push(treeNode.id)
+                    }
+                }
+                localStorage.setItem('ztreeOpen', arr.join(','))
+            },
+            onCollapse: function (event, treeId, treeNode) {
+                console.log('onCollapse')
+                console.log(treeNode.id + ", " + treeNode.name);
+                var arr = localStorage.getItem('ztreeOpen')
+                console.log(arr)
+                if (arr === null){
+                    arr = []
+                } else {
+                    arr = arr.split(',')
+                    for (var i = 0; i < arr.length; i++) {
+                        if (Number(arr[i]) === treeNode.id) {
+                            arr.splice(i, 1)
+                        }
+                    }
+                }
+                localStorage.setItem('ztreeOpen', arr.join(','))
+            }
+        }
+    };
+
+    var zNodes = [{
+            id: 1,
+            pId: 0,
+            name: "南京",
+        },
+        {
+            id: 102,
+            pId: 1,
+            name: "溧水华成蔬菜"
+        },
+        // {
+        //     id: 102,
+        //     pId: 1,
+        //     name: "南京市畜牧家禽研究所"
+        // },
+        // {
+        //     id: 102,
+        //     pId: 1,
+        //     name: "南京桥丰农业发展有限公司"
+        // },
+        // {
+        //     id: 102,
+        //     pId: 1,
+        //     name: "高淳红松猪场"
+        // },
+        // {
+        //     id: 102,
+        //     pId: 1,
+        //     name: "南京太和水稻种植专业合作社"
+        // },
+        // {
+        //     id: 102,
+        //     pId: 1,
+        //     name: "南京凤茸梅花鹿养殖有限公司"
+        // },
+        // {
+        //     id: 102,
+        //     pId: 1,
+        //     name: "南京绿泽园林有限公司"
+        // },
+        // {
+        //     id: 102,
+        //     pId: 1,
+        //     name: "金色庄园溧水基地"
+        // },
+        // {
+        //     id: 102,
+        //     pId: 1,
+        //     name: "江宁区台湾农民创业园发展有限公司"
+        // },
+        // {
+        //     id: 102,
+        //     pId: 1,
+        //     name: "南京红松生态农业发展有限公司"
+        // },
+        // {
+        //     id: 102,
+        //     pId: 1,
+        //     name: "南京桥丰农业发展有限公司"
+        // },
+        // {
+        //     id: 102,
+        //     pId: 1,
+        //     name: "南京市浦口区望月农庄"
+        // },
+        // {
+        //     id: 102,
+        //     pId: 1,
+        //     name: "南京市畜牧家禽科学研究所"
+        // },
+        // {
+        //     id: 102,
+        //     pId: 1,
+        //     name: "南京天纬农业科技有限公司"
+        // },
+        // {
+        //     id: 102,
+        //     pId: 1,
+        //     name: "南京福朝农业发展有限公司"
+        // },
+
+        {
+            id: 2,
+            pId: 0,
+            name: "南通",
+        },
+        {
+            id: 202,
+            pId: 2,
+            name: "如东鸿轩生态农业蔬菜基地"
+        },
+        // {
+        //     id: 202,
+        //     pId: 2,
+        //     name: "太仓农业现代园智能温室"
+        // },
+        // {
+        //     id: 202,
+        //     pId: 2,
+        //     name: "太仓现代农业园气象站"
+        // },
+        // {
+        //     id: 202,
+        //     pId: 2,
+        //     name: "如东设施大棚"
+        // },
+        // {
+        //     id: 202,
+        //     pId: 2,
+        //     name: "江苏南通如皋裕康畜牧基地"
+        // },
+
+        {
+            id: 3,
+            pId: 0,
+            name: "宜兴"
+        },
+        {
+            id: 302,
+            pId: 3,
+            name: "螃蟹荷花湾"
+        },
+        // {
+        //     id: 302,
+        //     pId: 3,
+        //     name: "螃蟹高塍"
+        // },
+        // {
+        //     id: 302,
+        //     pId: 3,
+        //     name: "宜兴丁蜀镇"
+        // },
+        // {
+        //     id: 302,
+        //     pId: 3,
+        //     name: "螃蟹姜堰"
+        // },
+        // {
+        //     id: 302,
+        //     pId: 3,
+        //     name: "宜兴水塘"
+        // },
+
+        {
+            id: 4,
+            pId: 0,
+            name: "淮安",
+        },
+        // {
+        //     id: 5,
+        //     pId: 0,
+        //     name: "无锡",
+        // },
+        // {
+        //     id: 6,
+        //     pId: 0,
+        //     name: "徐州",
+        // },
+        // {
+        //     id: 7,
+        //     pId: 0,
+        //     name: "常州",
+        // },
+        // {
+        //     id: 8,
+        //     pId: 0,
+        //     name: "苏州",
+        // },
+        // {
+        //     id: 9,
+        //     pId: 0,
+        //     name: "盐城",
+        // },
+        // {
+        //     id: 10,
+        //     pId: 0,
+        //     name: "镇江",
+        // },
+        // {
+        //     id: 11,
+        //     pId: 0,
+        //     name: "扬州",
+        // },
+        // {
+        //     id: 12,
+        //     pId: 0,
+        //     name: "泰州",
+        // },
+        // {
+        //     id: 13,
+        //     pId: 0,
+        //     name: "宿迁",
+        // },
+    ];
+
+    $(document).ready(function () {
+        var arr = localStorage.getItem('ztreeOpen')
+        var selectedId = localStorage.getItem('ztreeSelectedItem')
+        console.log(arr)
+        console.log(selectedId)
+        if (arr !== null) {
+            arr = arr.split(',')
+            for (var i = 0; i < arr.length; i++) {
+                for (var j = 0; j < zNodes.length; j++) {
+                    if (Number(arr[i]) === zNodes[j].id) {
+                        zNodes[j].open = true
+                        console.log(zNodes[i])
+                    }
+                }
+            }
+        }
+        console.log(zNodes)
+		
+        $.fn.zTree.init($("#treeConfig"), setting, zNodes);
+        if (selectedId) {
+            var zTree = $.fn.zTree.getZTreeObj("treeConfig");
+            var node = zTree.getNodeByParam("id", selectedId);
+            zTree.selectNode(node);
+        }
+    });
+    window.onbeforeunload = function () {
+        console.log('销毁')
+        // localStorage.removeItem('ztreeOpen')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+        // localStorage.removeItem('ztreeSelectedItem')
+        // localStorage.removeItem('name')
+    }
+</script>
+
+</html>

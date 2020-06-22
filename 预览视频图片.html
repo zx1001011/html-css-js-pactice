@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>capture screen</title>
+<style>
+video {
+	height: 100px;
+	width: 100px;
+	position: relative;
+	z-index: -100;
+}
+#output {
+	position: absolute;
+    top: 0;
+    left: 0;
+	z-index: -99;
+	height: 100px;
+	width: 100px;
+	background-color: #e1e1e1;
+}
+</style>
+</head>
+<body>
+	<video id="video" controls="controls">
+		<source src="1.mp4">
+	</video>
+    <div id="output">
+	</div>
+	<script src="./jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+
+    var video, output;
+    var scale = 0.8;
+	var k = 0
+	
+    var initialize = function() {
+        output = document.getElementById("output");
+        video = document.getElementsByTagName("video");
+		for (var i = 0; i < video.length; i++){
+			video[i].currentTime = 2
+			var j = i + 1
+			video[i].oncanplay = captureVideoImage(i, j);
+		}
+    };
+	function captureVideoImage(i, j) {
+		console.log(video[i])
+		console.log(i)
+		console.log(j)
+		var _self = video[i]
+		setTimeout(function(){
+			k +=2
+			console.log(_self)
+			var canvas = document.createElement("canvas");
+			canvas.width = _self.videoWidth * scale;
+			canvas.height = _self.videoHeight * scale;
+			canvas.getContext('2d').drawImage(_self, 0, 0, canvas.width, canvas.height);
+			var img = document.createElement("img");
+			img.setAttribute('crossOrigin', 'anonymous');
+			img.src = canvas.toDataURL("image/png");
+			
+			output.appendChild(img);
+			console.log(new Date)
+			console.log(k+'s')
+		},1000)
+	}
+ 
+    var captureImage = function(videoElement) {
+        var canvas = document.createElement("canvas");
+        canvas.width = videoElement.videoWidth * scale;
+        canvas.height = videoElement.videoHeight * scale;
+        canvas.getContext('2d').drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+        var img = document.createElement("img");
+		img.setAttribute('crossOrigin', 'anonymous');
+        img.src = canvas.toDataURL("image/png");
+		
+        output.appendChild(img);
+		console.log(new Date)
+		/*
+			let a = document.createElement('a') // 生成一个a元素
+			let event = new MouseEvent('click') // 创建一个单击事件
+			a.download = 'photo' // 设置图片名称
+			a.href = img.src // 将生成的URL设置为a.href属性
+			a.dispatchEvent(event) // 触发a的单击事件
+		*/
+    };
+ 
+    initialize();
+	
+</script>
+
+
+</body>
+</html>

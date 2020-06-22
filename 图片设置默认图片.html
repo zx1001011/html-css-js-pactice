@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8">
+
+<title>默认图片的设置</title>
+<style>
+	body {
+		height: 100%;
+		width: 100%;
+	}
+	.div {
+		height: 150px;
+		position: relative;
+		width: calc(20% - 2px);
+		display: inline-block;
+		border: 1px solid black;
+		color: black;
+	}
+	.img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		background-size: cover;
+		background-color: grey;
+		background-position: center 100%;
+		width: 100%;
+		height: 100%;
+		background-repeat: no-repeat;
+		z-index: -1;
+	}
+	.video-item-deviceName, .video-item-place {
+		color: black;
+		padding: 5% 5% 0 5%;
+		font-size: 16px;
+		word-break: break-word;
+		display: table;
+	}
+</style>
+</head>
+
+<body>
+	<div class="div">
+		<p class="video-item-deviceName">南京桥丰农业发展有限公司</p>
+		<p class="video-item-place">所属：南京市</p>
+		<img class="img" src="v.png" onerror="this.src='./video.png'" alt="pic" />
+	</div>
+</body>
+
+
+</html>
