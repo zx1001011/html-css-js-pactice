@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+        }
+
+        img:hover {
+            content: url('./icon-平台入口-蓝.png');
+            background-color: white;
+        }
+
+        li::before {
+            content: url('./icon-平台入口-白.png');
+        }
+
+        .before {
+            content: url('./icon-平台入口-白.png');
+        }
+
+        #img1 {
+            content: url('./icon-平台入口-白.png');
+        }
+    </style>
+</head>
+
+<body>
+    <img src="./icon-平台入口-白.png">
+    <img src="./icon-平台入口-蓝.png" class="before">
+    <img src="#" class="before">
+    <img src="#" id="img1">
+    <li>li::before属性设置content</li>
+    <li class="before">用class设置content</li>
+</body>
+
+</html>
