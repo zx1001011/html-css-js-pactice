@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+    <script src="./echarts/echarts.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            background-color: wheat;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+            background-color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <script>
+        var place = '江苏省';
+        document.write('<script type="text/javascript" src="./map/' + place + '.js"></scr' + 'ipt>')
+    </script>
+    <script src="./test.js"></script>
+</body>
+
+</html>
