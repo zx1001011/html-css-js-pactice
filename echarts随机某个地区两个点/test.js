@@ -1,6 +1,5 @@
 window.onload = function () {
     console.log('hhahha')
-
     var map = {
         place: '江苏省',
         allData: { "code": 0, "desc": null, "detailInfo": [{ "cityName": "常州市", "unitCount": 7, "deviceCount": 0, "cameraCount": 0 }, { "cityName": "无锡市", "unitCount": 9, "deviceCount": 166, "cameraCount": 10 }, { "cityName": "镇江市", "unitCount": 7, "deviceCount": 0, "cameraCount": 0 }, { "cityName": "扬州市", "unitCount": 11, "deviceCount": 0, "cameraCount": 0 }, { "cityName": "连云港市", "unitCount": 35, "deviceCount": 0, "cameraCount": 0 }, { "cityName": "南京市", "unitCount": 32, "deviceCount": 110, "cameraCount": 15 }, { "cityName": "宿迁市", "unitCount": 22, "deviceCount": 0, "cameraCount": 0 }, { "cityName": "徐州市", "unitCount": 15, "deviceCount": 0, "cameraCount": 0 }, { "cityName": "淮安市", "unitCount": 40, "deviceCount": 0, "cameraCount": 0 }, { "cityName": "苏州市", "unitCount": 25, "deviceCount": 11, "cameraCount": 7 }, { "cityName": "泰州市", "unitCount": 9, "deviceCount": 1, "cameraCount": 0 }, { "cityName": "南通市", "unitCount": 24, "deviceCount": 26, "cameraCount": 0 }, { "cityName": "盐城市", "unitCount": 14, "deviceCount": 0, "cameraCount": 0 }] },
