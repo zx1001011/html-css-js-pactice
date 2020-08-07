@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+    <link rel="stylesheet" href="../assets/layui/css/layui.css">
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=It0eXPqqvO6fkTONXG7QCujUrYfWp4PS">
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" name="lng" lay-verify="title" autocomplete="off" placeholder="经度,纬度" class="layui-input">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="../assets/layui/layui.js"></script>
+    <script src="./search.js"></script>
+    <script>
+        var t = new myLocation()
+        t.renderHTML($('input[name=lng]'))
+    </script>
+</body>
+
+</html>
