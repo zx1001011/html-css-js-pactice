@@ -4,17 +4,19 @@ var myLocation = function () {
 myLocation.prototype = {
     MAP: -1,
     renderHTML: function (el) {
-        var tmp = '<div class="my-location-layer" style="display: none;height: 100%;width: 100%;">' +
-            '<div style="position: absolute;top: 20px;left: 20px;z-index: 1;">' +
-            '<input type="text" placeholder="请输入名称" class="my-location-address layui-input" style="padding-right: 30px;"' +
-            'name="my-location-address">' +
-            '<i type="button" class="my-location-btn layui-icon layui-icon-search" style="position: absolute;top: 10px; right: 10px;"></i>' +
-            '</div>' +
-            '<div id="my-location-map" style="height: 100%;width: 100%;"></div>' +
-            '</div>';
-        var div = document.createElement('div')
-        div.innerHTML = tmp
-        document.body.appendChild(div)
+        if ($('.my-location-layer').length === 0) {
+            var tmp = '<div class="my-location-layer" style="display: none;height: 100%;width: 100%;">' +
+                '<div style="position: absolute;top: 20px;left: 20px;z-index: 1;">' +
+                '<input type="text" placeholder="请输入名称" class="my-location-address layui-input" style="padding-right: 30px;"' +
+                'name="my-location-address">' +
+                '<i type="button" class="my-location-btn layui-icon layui-icon-search" style="position: absolute;top: 10px; right: 10px;"></i>' +
+                '</div>' +
+                '<div id="my-location-map" style="height: 100%;width: 100%;"></div>' +
+                '</div>';
+            var div = document.createElement('div')
+            div.innerHTML = tmp
+            document.body.appendChild(div)
+        }
         var _this = this
         layui.use('layer', function () {
             el.focus(function () {
@@ -27,6 +29,7 @@ myLocation.prototype = {
                     content: $('.my-location-layer'),
                     zIndex: layer.zIndex,
                     success: function () {
+                        $('.my-location-layer').show()
                         _this.MAP = new BMap.Map("my-location-map");
                         _this.MAP.centerAndZoom("江苏", 11);
                         _this.MAP.enableScrollWheelZoom(true); //启用滚轮放大缩小，默认禁用
@@ -34,28 +37,41 @@ myLocation.prototype = {
                         _this.MAP.enableDragging(); //启用地图拖拽，默认启用
                         _this.MAP.enableDoubleClickZoom(); //启用双击放大，默认启用
                         _this.MAP.addEventListener("click", function (e) {
-                            _this.MAP.clearOverlays();
-                            // alert(e.point.lng + "," + e.point.lat);
-                            point = new BMap.Point(e.point.lng, e.point.lat);
-                            var geoc = new BMap.Geocoder();
-                            geoc.getLocation(point, function (rs) {
-                                var addComp = rs.addressComponents;
-                                // {streetNumber: "", street: "", district: "沙坪坝区", city: "重庆市", province: "重庆市"}
-                                var address = addComp.province + addComp.city + addComp
-                                    .district + addComp.street +
-                                    addComp.streetNumber
-                                $('input[name=my-location-address]').val(address)
-                            });
-                            var marker = new BMap.Marker(point);
-                            _this.MAP.addOverlay(marker);
-                            // document.getElementById("map").value = e.point.lng + "," + e.point.lat;
+                            // console.log(typeof e.point.lng);
+                            // console.log(e.point.lng + "," + e.point.lat);
+                            _this.setMarker({ lng: e.point.lng, lat: e.point.lat })
                             el.val(e.point.lng + ',' + e.point.lat)
                         });
-
                         // 按钮事件(自己定义)
                         $(".my-location-btn").click(function () {
                             _this.setPlace($('input[name=my-location-address]').val(), el);
                         });
+                        $('input[name=my-location-address]').keypress(function (e) {
+                            if (e.keyCode === 13) {
+                                _this.setPlace($('input[name=my-location-address]').val(), el);
+                            }
+                        });
+                        var value = el.val()
+                        if (value.split(',').length === 2) {
+                            _this.setMarker({
+                                lng: value.split(',')[0],
+                                lat: value.split(',')[1]
+                            })
+                        }
+                        el.keypress(function (e) {
+                            var value = el.val()
+                            if (value.split(',').length === 2) {
+                                _this.setMarker({
+                                    lng: value.split(',')[0],
+                                    lat: value.split(',')[1]
+                                })
+                            }
+                        })
+                    },
+                    cancel: function () {
+                        $('.my-location-layer').hide()
+                        $('input[name=my-location-address]').val('')
+                        _this.MAP.clearOverlays();
                     }
                 });
             })
@@ -89,5 +105,24 @@ myLocation.prototype = {
                 alert("未找到搜索结果")
             }
         }
+    },
+    setMarker: function (point) {
+        var _this = this
+        _this.MAP.clearOverlays();
+        // alert(e.point.lng + "," + e.point.lat);
+        point = new BMap.Point(point.lng, point.lat);
+        _this.MAP.centerAndZoom(point, 9);
+        var geoc = new BMap.Geocoder();
+        geoc.getLocation(point, function (rs) {
+            var addComp = rs.addressComponents;
+            // {streetNumber: "", street: "", district: "沙坪坝区", city: "重庆市", province: "重庆市"}
+            var address = addComp.province + addComp.city + addComp
+                .district + addComp.street +
+                addComp.streetNumber
+            $('input[name=my-location-address]').val(address)
+        });
+        var marker = new BMap.Marker(point);
+        _this.MAP.addOverlay(marker);
+        // document.getElementById("map").value = e.point.lng + "," + e.point.lat;
     }
 }
