@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>selectTree</title>
+    <link rel="stylesheet" href="../assets/layui/css/layui.css">
+    <style>
+        .my-tree .layui-tree-entry {
+            height: 2.5rem;
+        }
+
+        .my-tree .layui-tree-icon {
+            border-width: 0;
+            height: auto;
+            width: auto;
+            line-height: auto;
+        }
+
+        .my-tree .layui-icon-subtraction:before {
+            content: " ";
+            display: inline-block;
+            height: 1.4rem;
+            width: 1.4rem;
+            background: url(./img/icon_open_static.png) no-repeat;
+            background-size: 100%;
+        }
+
+        .my-tree .layui-icon-addition:before {
+            content: " ";
+            display: inline-block;
+            height: 1.4rem;
+            width: 1.4rem;
+            background: url(./img/icon_close_static.png) no-repeat;
+            background-size: 100%;
+        }
+
+        .my-tree .layui-icon-file:before {
+            content: " ";
+            display: inline-block;
+            height: 1.4rem;
+            width: 1.4rem;
+            background: url(./img/icon_user.png) no-repeat;
+            background-size: 100%;
+            margin-left: 5px;
+            margin-right: -2px;
+        }
+
+        .my-tree .layui-tree-line .layui-tree-entry:hover .layui-tree-txt {
+            color: #009688;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layui-unselect layui-form-select downpanel">
+        <div class="layui-select-title">
+            <span class="layui-input layui-unselect" id="treeclass" style="line-height: 36px;">--请选择--</span>
+            <i class="layui-edge"></i>
+        </div>
+        <dl class="layui-anim layui-anim-upbit">
+            <dd>
+                <ul id="tree-unit" class="my-tree"></ul>
+            </dd>
+        </dl>
+    </div>
+    <script src="../assets/jquery-3.4.1.min.js"></script>
+    <script src="../assets/layui/layui.js"></script>
+    <script>
+        $(document).ready(function () {
+            var treeS = function () {};
+            treeS.prototype = {
+                treeIndex: -1,
+                mapSelectTree: function (list, data) {
+                    for (var i = 0; i < list.length; i++) {
+                        list[i]['title'] = list[i]['name']
+                        list[i]['spread'] = false
+                        if (data) {
+                            if (data.time == 0) {
+                                list[i]['checked'] = data.checked
+                            } else {
+
+                            }
+                        }
+                        if (list[i]['isUser'] === 0) {
+                            list[i].children = []
+                            list[i].children.push({
+                                title: ''
+                            })
+                        }
+                    }
+                    return list
+                },
+                renderUnitSelectTree: function () {
+                    var _this = this
+                    var treeList = [{
+                            "id": "4", // 区分
+                            "time": 0,
+                            "name": "墨家",
+                            "isUser": 0, // 标记是否为用户还是组织
+                            "checked": false // 是否已经分享过，用来初始化select的值+选择提交
+                        }, {
+                            "id": "3",
+                            "time": 0,
+                            "name": "盖聂",
+                            "isUser": 1,
+                            "checked": false
+                        },
+                        {
+                            "id": "0",
+                            "time": 0,
+                            "name": "荆轲",
+                            "isUser": 1,
+                            "checked": false
+                        }, {
+                            "id": "2",
+                            "time": 0,
+                            "name": "法家",
+                            "isUser": 0,
+                            "checked": false
+                        }, {
+                            "id": "11",
+                            "time": 0,
+                            "name": "其他组织",
+                            "isUser": 0,
+                            "checked": false
+                        }
+                    ];
+                    // 第一级
+                    treeList = _this.mapSelectTree(treeList)
+                    if (_this.treeIndex === -1) {
+                        _this.renderSelectTree(treeList);
+                    } else {
+                        _this.treeIndex.reload({
+                            data: treeList
+                        });
+                    }
+                },
+                renderSelectTree: function (treeList) {
+                    var _this = this
+                    layui.use(['treeS'], function () {
+                        var treeS = layui.treeS;
+                        _this.treeIndex = treeS.render({
+                            elem: '#tree-unit',
+                            id: 'treeId',
+                            showCheckbox: true,
+                            // checkboxName: 'isShare',//复选框的name属性值
+                            data: treeList,
+                            drag: true,
+                            onlyIconControl: false,
+                            text: {
+                                defaultNodeName: '无数据',
+                                none: '无数据'
+                            },
+                            click: function (node) {
+                                console.log('click')
+                                console.log(node)
+                                if (node.state === 'close' && node.data.isUser ===
+                                    0) {
+                                    var items = []
+                                    if (node.data.name === '墨家') {
+                                        items = [{
+                                            "id": "101",
+                                            "time": 0,
+                                            "name": "墨子",
+                                            "isUser": 1,
+                                            // "checked": false // 这边如果不是第一次的话需要重新赋值
+                                        }];
+                                    } else if (node.data.name === '其他组织') {
+                                        items = [{
+                                            "id": "111",
+                                            "time": 0,
+                                            "name": "人",
+                                            "isUser": 1,
+                                            // "checked": false // 这边如果不是第一次的话需要重新赋值
+                                        }, {
+                                            "id": "188",
+                                            "time": 0,
+                                            "name": "群众",
+                                            "isUser": 0,
+                                            // "checked": false // 这边如果不是第一次的话需要重新赋值
+                                        }];
+                                    } else if (node.data.name === '流沙') {
+                                        items = [{
+                                            "id": "171",
+                                            "time": 0,
+                                            "name": "卫庄",
+                                            "isUser": 1,
+                                            // "checked": false // 这边如果不是第一次的话需要重新赋值
+                                        }];
+                                    } else if (node.data.name === '法家') {
+                                        items = [{
+                                            "id": "181",
+                                            "time": 0,
+                                            "name": "韩非",
+                                            "isUser": 1,
+                                            // "checked": false // 这边如果不是第一次的话需要重新赋值
+                                        }];
+                                    } else if (node.data.name === '群众') {
+                                        items = [{
+                                            "id": "189",
+                                            "time": 0,
+                                            "name": "张三",
+                                            "isUser": 1,
+                                            // "checked": false // 这边如果不是第一次的话需要重新赋值
+                                        }];
+                                    }
+                                    // 下一级加载 time 表示加载的详情次数
+                                    // 如果第一次加载下一级，需要根据当前的父亲的选择是否全部勾选
+                                    // 如果不是第一次，那么根据原来的选择勾选
+                                    items = _this.mapSelectTree(
+                                        items, node.data)
+                                    node.data.spread = true
+                                    node.data.time += 1
+                                    node.data.children = items
+                                    _this.treeIndex.reload();
+                                } else {
+                                    node.data.spread = false
+                                    node.data.children = _this.mapSelectTree(
+                                        node.data.children, node.data)
+                                    node.data.time += 1
+                                    _this.treeIndex.reload()
+                                }
+                                // if (_this.treeIndex !== -1) {
+                                //     _this.setSelectChecked()
+                                // }
+                                return false
+                            },
+                            oncheck: function (node) {
+                                console.log('oncheck')
+                                console.log(node)
+                                console.log(node.checked)
+                                if (node.data.isUser === 0) {
+                                    /*
+                                     *  组织需要看有没有展开或者子元素有数据了
+                                     *  需要判断子元素的勾选状态
+                                     */
+                                } else {
+                                    // 用户直接点上
+                                }
+                                node.data.checked = node.checked
+                                if (_this.treeIndex !== -1) {
+                                    _this.setSelectChecked()
+                                }
+                            }
+                        })
+                        $(".downpanel").on("click", ".layui-select-title", function (e) {
+                            $(".layui-form-select").not($(this).parents(
+                                ".layui-form-select")).removeClass(
+                                "layui-form-selected");
+                            $(this).parents(".downpanel").toggleClass(
+                                "layui-form-selected");
+                            layui.stope(e); // 防止冒泡
+                        });
+                        $('.downpanel .layui-anim-upbit').unbind()
+                        $('.downpanel .layui-anim-upbit').bind('click', function (e) {
+                            layui.stope(e);
+                        })
+                        $(document).on("click", function (e) {
+                            $(".layui-form-select").removeClass("layui-form-selected");
+                        });
+                        _this.setSelectChecked()
+                    })
+                },
+                setSelectChecked: function () {
+                    var _this = this
+                    var checked = _this.treeIndex.getChecked()
+                    console.log(checked)
+                    var nameStr = checked.map(function (obj, index) {
+                        return obj.name;
+                    }).join(',');
+                    if (nameStr === '') {
+                        nameStr = '--请选择--'
+                    }
+                    var $select = $('#tree-unit').parents(".layui-form-select");
+                    $select.find(".layui-select-title span").html(nameStr);
+                },
+                init: function () {
+                    var _this = this;
+                    _this.renderUnitSelectTree();
+                }
+            }
+            var treeSelection = new treeS();
+            treeSelection.init()
+        })
+    </script>
+</body>
+
+</html>
