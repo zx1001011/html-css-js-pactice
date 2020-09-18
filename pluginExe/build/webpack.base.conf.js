@@ -1,14 +1,13 @@
 const { resolve } = require('path')
-
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-module.exports = {
+const webpackBaseConfig = {
+    context: path.resolve(__dirname, '../'),
     entry: './src/js/index.js',
     output: {
         filename: '[name].js',
         path: resolve(__dirname, './dist')
     },
-    mode: 'development',
     module: {
         rules: [{
             test: /\.css$/,
@@ -53,3 +52,4 @@ module.exports = {
         open: true  // 自动打开浏览器
     }
 }
+module.exports = webpackBaseConfig
