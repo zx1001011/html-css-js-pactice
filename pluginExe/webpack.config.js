@@ -5,6 +5,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
+const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const postcssOption = {
     loader: 'postcss-loader'
@@ -13,16 +14,11 @@ const postcssOption = {
 module.exports = {
     // 单入口
     entry: './src/js/index.js',
-    // entry: {
-    //     // 多入口: 入口-bundle
-    //     index: './src/js/index.js',
-    //     test: './src/js/test.js',
-    // },
     output: {
         filename: '[name].[contenthash:10].js',
         path: resolve(__dirname, './dist')
     },
-    mode: 'production',
+    mode: 'development',
     module: {
         rules: [{
             test: /\.css$/,
@@ -58,7 +54,7 @@ module.exports = {
             test: /\.js$/,
             exclude: /node_modules/,
             use: [
-                'thread-loader',
+                // 'thread-loader',
                 {
                     loader: 'babel-loader',
                     options: {
@@ -89,14 +85,13 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/index.html',
-            // 压缩html代码
-            minify: {
-                // 移除空格
-                collapseWhitespace: true,
-                // 移除注释
-                removeComments: true
-            }
+            template: './src/index.html'
+        }),
+        new webpack.DllReferencePlugin({
+            manifest: resolve(__dirname, 'dll/manifest.json')
+        }),
+        new AddAssetHtmlWebpackPlugin({
+            filepath: resolve(__dirname, 'dll/jquery.js')
         }),
         new MiniCssExtractPlugin({
             filename: 'built.[contenthash:10].css'   // 输出为单个css文件
@@ -104,24 +99,13 @@ module.exports = {
         require('postcss-preset-env'),  // 
         new OptimizeCssAssetsWebpackPlugin(),   // 压缩css
         new CleanWebpackPlugin(),
-        new webpack.DllReferencePlugin({
-            manifest: resolve(__dirname, 'dll/manifest.json')
-        })
-        
     ],
     devServer: {
         contentBase: resolve(__dirname, 'dist'),  // 项目构建后路径
         compress: true,  // 启用gzip压缩
         port: 3000,
-        open: false,  // 自动打开浏览器
+        open: true,  // 自动打开浏览器
         // hot: true,  // 热更新
     },
-    // 可以将node_modules中的代码单独打包成一个chunk，例如多个文件使用jquery
-    optimization: {
-        splitChunks: {
-            chunks: 'all'
-        }
-    },
-    // devtool: 'source-map',  // 源代码到构建后代码映射的技术 
-    // watch: true // 实时预览
+    devtool: 'eval-source-map',  // 源代码到构建后代码映射的技术 
 }

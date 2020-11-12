@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[1],{87:function(n,o){n.exports=function(){console.log("print")}}}]);

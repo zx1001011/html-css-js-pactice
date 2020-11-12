@@ -1,13 +1,9 @@
 const { resolve } = require('path')
 const webpack = require('webpack')
 
-const vendors = [
-    'jquery'
-]
-
 module.exports = {
     entry: {
-        vendors: vendors
+        jquery: ['jquery']
     },
     output: {
         filename: '[name].js',

@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+
+<head>
+</head>
+
+<body>
+    <input type="text" id="test" />
+    <script>
+        var input = document.getElementById("test");
+        addListener(input, "mousedown", function () {
+            console.log("mousedown");
+        });
+        addListener(input, "mouseup", function () {
+            console.log("mouseup");
+        });
+        addListener(input, "click", function () {
+            console.log("click");
+        });
+        addListener(input, "focus", function () {
+            console.log("focus");
+        });
+        addListener(input, "blur", function () {
+            console.log("blur");
+        });
+        addListener(input, "change", function () {
+            console.log("change");
+        });
+        addListener(input, "keydown", function () {
+            console.log("keydown");
+        });
+        addListener(input, "keyup", function () {
+            console.log("keyup");
+        });
+        addListener(input, "input", function () {
+            console.log("input");
+        });
+
+        function addListener(dom, event, func) {
+            if (dom.addEventListener) {
+                dom.addEventListener(event, func);
+            } else if (dom.attachEvent) {
+                dom.attachEvent("on" + event, func);
+            } else {
+                dom["on" + event] = func;
+            }
+        }
+    </script>
+</body>
+
+</html>
